@@ -1,4 +1,4 @@
-package com.campus.foodorder.ui.student
+﻿package com.campus.foodorder.ui.student
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import com.campus.foodorder.R
 import com.campus.foodorder.adapter.MenuItemAdapter
 import com.campus.foodorder.data.model.MenuItem
 import com.campus.foodorder.viewmodel.MenuViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 // Lab: Activities, RecyclerView, ViewModel (Phase 2)
@@ -43,7 +44,7 @@ class StudentDashboardActivity : AppCompatActivity() {
     }
 
     private fun insertSampleData() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val sampleItems = listOf(
                 MenuItem(
                     vendorId = 1,
