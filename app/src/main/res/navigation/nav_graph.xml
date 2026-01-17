@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.campus.foodorder.ui.auth.LoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_login_to_student"
+            app:destination="@id/studentDashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_login_to_vendor"
+            app:destination="@id/vendorDashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/studentDashboardFragment"
+        android:name="com.campus.foodorder.ui.student.StudentDashboardFragment"
+        android:label="Student Dashboard" />
+
+    <fragment
+        android:id="@+id/vendorDashboardFragment"
+        android:name="com.campus.foodorder.ui.vendor.VendorDashboardFragment"
+        android:label="Vendor Dashboard" />
+
+</navigation>

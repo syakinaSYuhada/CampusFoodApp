@@ -1,4 +1,4 @@
-plugins {
+﻿plugins {
     id("com.android.application") version "8.2.2"
     kotlin("android") version "1.9.22"
     kotlin("kapt") version "1.9.22"
@@ -50,6 +50,10 @@ dependencies {
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
