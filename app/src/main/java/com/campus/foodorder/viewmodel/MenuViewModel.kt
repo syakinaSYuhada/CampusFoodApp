@@ -1,4 +1,4 @@
-package com.campus.foodorder.viewmodel
+﻿package com.campus.foodorder.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 // Lab: ViewModel & StateFlow (Phase 2)
-// Purpose: Manage menu data lifecycle and handle business logic
+// Purpose: Manage menu data lifecycle - repository handles threading via withContext(Dispatchers.IO)
+// ViewModel just launches coroutines normally - no explicit Dispatcher needed
 class MenuViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = MenuRepository(application)
 
-    // Expose menu items as StateFlow for reactive updates
     val allMenuItems: StateFlow<List<MenuItem>> = repository.getAllMenuItems()
         .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Lazily, emptyList())
 

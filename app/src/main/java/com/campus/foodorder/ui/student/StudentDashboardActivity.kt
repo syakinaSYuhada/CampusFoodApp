@@ -10,11 +10,11 @@ import com.campus.foodorder.R
 import com.campus.foodorder.adapter.MenuItemAdapter
 import com.campus.foodorder.data.model.MenuItem
 import com.campus.foodorder.viewmodel.MenuViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 // Lab: Activities, RecyclerView, ViewModel (Phase 2)
-// Purpose: Student dashboard to browse and order food items
+// Purpose: Student dashboard to browse food items
+// Threading handled automatically via Repository.withContext(Dispatchers.IO)
 class StudentDashboardActivity : AppCompatActivity() {
     private lateinit var rvMenuItems: RecyclerView
     private lateinit var adapter: MenuItemAdapter
@@ -27,7 +27,6 @@ class StudentDashboardActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
         rvMenuItems = findViewById(R.id.rvMenuItems)
 
-        // Setup RecyclerView
         adapter = MenuItemAdapter()
         rvMenuItems.layoutManager = LinearLayoutManager(this)
         rvMenuItems.adapter = adapter
@@ -39,12 +38,12 @@ class StudentDashboardActivity : AppCompatActivity() {
             }
         }
 
-        // Insert sample data if database is empty (for demo)
+        // Insert sample data on first launch
         insertSampleData()
     }
 
     private fun insertSampleData() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             val sampleItems = listOf(
                 MenuItem(
                     vendorId = 1,
@@ -71,9 +70,7 @@ class StudentDashboardActivity : AppCompatActivity() {
                     preparationTime = 12
                 )
             )
-            sampleItems.forEach { item ->
-                viewModel.insertMenuItem(item)
-            }
+            sampleItems.forEach { viewModel.insertMenuItem(it) }
         }
     }
 }

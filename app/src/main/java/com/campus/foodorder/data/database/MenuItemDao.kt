@@ -1,4 +1,4 @@
-package com.campus.foodorder.data.database
+﻿package com.campus.foodorder.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -8,11 +8,8 @@ import androidx.room.Delete
 import com.campus.foodorder.data.model.MenuItem
 import kotlinx.coroutines.flow.Flow
 
-// Lab: Room Data Access Object (Phase 2)
-// Purpose: Define database operations for MenuItem entity
 @Dao
 interface MenuItemDao {
-
     @Insert
     fun insert(item: MenuItem)
 
