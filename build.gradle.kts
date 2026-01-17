@@ -1,16 +1,5 @@
 ﻿// Root build file for CampusFoodApp
 // Lab: Project Setup (Phase 1)
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
+// Repositories are defined in settings.gradle.kts via pluginManagement/dependencyResolutionManagement.
+// Keep root build empty for Gradle 8+ convention.
