@@ -1,7 +1,13 @@
 ﻿package com.campus.foodorder.ui.student
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,23 +15,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.campus.foodorder.R
 import com.campus.foodorder.adapter.MenuItemAdapter
 import com.campus.foodorder.data.model.MenuItem
+import com.campus.foodorder.utils.NotificationHelper
 import com.campus.foodorder.viewmodel.MenuViewModel
 import kotlinx.coroutines.launch
 
-// Lab: Activities, RecyclerView, ViewModel (Phase 2)
-// Purpose: Student dashboard to browse food items
-// Threading handled automatically via Repository.withContext(Dispatchers.IO)
+// Lab: Activities, RecyclerView, ViewModel, Notifications (Phase 2 & 3)
+// Purpose: Student dashboard to browse food items with notification support
 class StudentDashboardActivity : AppCompatActivity() {
     private lateinit var rvMenuItems: RecyclerView
     private lateinit var adapter: MenuItemAdapter
     private lateinit var viewModel: MenuViewModel
+    private lateinit var notificationHelper: NotificationHelper
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_dashboard)
 
         viewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
+        notificationHelper = NotificationHelper(this)
         rvMenuItems = findViewById(R.id.rvMenuItems)
+
+        // Request notification permission for Android 13+
+        requestNotificationPermission()
 
         adapter = MenuItemAdapter()
         rvMenuItems.layoutManager = LinearLayoutManager(this)
@@ -35,11 +56,34 @@ class StudentDashboardActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.allMenuItems.collect { items ->
                 adapter.updateItems(items)
+                // Show notification when menu items are loaded
+                if (items.isNotEmpty()) {
+                    notificationHelper.showOrderNotification(
+                        "Menu Updated",
+                        "${items.size} items available"
+                    )
+                }
             }
         }
 
         // Insert sample data on first launch
         insertSampleData()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    // Permission already granted
+                }
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        }
     }
 
     private fun insertSampleData() {
