@@ -1,0 +1,19 @@
+# Android/IntelliJ/Gradle ignores
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+/app/build/
+/captures/
+.externalNativeBuild/
+/tmp/
+
+# Sign keys (do not commit real keys)
+*.keystore
+*.jks
+
+# Generated
+**/generated/**
+**/outputs/**

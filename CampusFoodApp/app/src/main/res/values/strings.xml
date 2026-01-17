@@ -1,0 +1,6 @@
+<resources>
+    <!-- Lab: Phase 1 Resources - Strings -->
+    <string name="app_name">Campus Food</string>
+    <string name="login">Login</string>
+    <string name="student_dashboard">Student Dashboard</string>
+</resources>
