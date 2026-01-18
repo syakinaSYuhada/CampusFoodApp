@@ -5,23 +5,31 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.campus.foodorder.data.model.MenuItem
+import com.campus.foodorder.data.model.Order
 
-// Lab: Room Setup (Phase 2)
-@Database(entities = [MenuItem::class], version = 1, exportSchema = false)
+@Database(
+    entities = [MenuItem::class, Order::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao
+    abstract fun orderDao(): OrderDao
 
     companion object {
-        @Volatile private var INSTANCE: AppDatabase? = null
-        fun getDatabase(context: Context): AppDatabase =
-            INSTANCE ?: synchronized(this) {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "campus_food_db"
+                    "campus_food_database"
                 ).build()
                 INSTANCE = instance
                 instance
             }
+        }
     }
 }
