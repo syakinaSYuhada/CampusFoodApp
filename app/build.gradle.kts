@@ -1,7 +1,9 @@
-﻿plugins {
+plugins {
     id("com.android.application") version "8.2.2"
     kotlin("android") version "1.9.22"
     kotlin("kapt") version "1.9.22"
+    kotlin("plugin.parcelize") version "1.9.22"
+    id("androidx.navigation.safeargs.kotlin") version "2.7.5"
 }
 
 android {

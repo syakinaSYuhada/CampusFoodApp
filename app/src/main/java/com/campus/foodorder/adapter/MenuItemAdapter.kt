@@ -9,13 +9,19 @@ import com.campus.foodorder.R
 import com.campus.foodorder.data.model.MenuItem
 
 // Lab: RecyclerView & ViewHolder (Phase 2)
-// Purpose: Display menu items list with proper binding
-class MenuItemAdapter(private var items: List<MenuItem> = emptyList()) :
-    RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
+// Purpose: Display menu items list with click handling for order creation
+class MenuItemAdapter(
+    private var items: List<MenuItem> = emptyList(),
+    private var onItemClick: ((MenuItem) -> Unit)? = null
+) : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
 
     fun updateItems(newItems: List<MenuItem>) {
         items = newItems
         notifyDataSetChanged()
+    }
+
+    fun setOnItemClickListener(listener: (MenuItem) -> Unit) {
+        onItemClick = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,6 +45,11 @@ class MenuItemAdapter(private var items: List<MenuItem> = emptyList()) :
             tvName.text = item.name
             tvDesc.text = item.description
             tvPrice.text = "RM ${String.format("%.2f", item.price)}"
+
+            // Phase 2 Lab Comment: Click listener to navigate to order creation
+            itemView.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
         }
     }
 }

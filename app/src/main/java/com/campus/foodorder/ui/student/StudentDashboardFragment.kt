@@ -1,4 +1,4 @@
-﻿package com.campus.foodorder.ui.student
+package com.campus.foodorder.ui.student
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.campus.foodorder.R
@@ -23,7 +24,7 @@ import com.campus.foodorder.viewmodel.MenuViewModel
 import kotlinx.coroutines.launch
 
 // Lab: Fragment with RecyclerView, ViewModel, Notifications (Phase 2-4)
-// Purpose: Student dashboard - can navigate back to login using back button
+// Purpose: Student dashboard - browse menu, tap to place order
 class StudentDashboardFragment : Fragment() {
     private lateinit var rvMenuItems: RecyclerView
     private lateinit var adapter: MenuItemAdapter
@@ -58,6 +59,12 @@ class StudentDashboardFragment : Fragment() {
         adapter = MenuItemAdapter()
         rvMenuItems.layoutManager = LinearLayoutManager(requireContext())
         rvMenuItems.adapter = adapter
+
+        // Phase 2 Lab Comment: Handle menu item click -> navigate to order creation
+        adapter.setOnItemClickListener { menuItem ->
+            val action = StudentDashboardFragmentDirections.actionToCreateOrder(menuItem)
+            findNavController().navigate(action)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.allMenuItems.collect { items ->

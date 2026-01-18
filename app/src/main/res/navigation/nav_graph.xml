@@ -1,6 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
@@ -23,7 +24,21 @@
     <fragment
         android:id="@+id/studentDashboardFragment"
         android:name="com.campus.foodorder.ui.student.StudentDashboardFragment"
-        android:label="Student Dashboard" />
+        android:label="Student Dashboard">
+        <action
+            android:id="@+id/action_to_create_order"
+            app:destination="@id/createOrderFragment" />
+    </fragment>
+
+    <!-- Phase 2 Lab: Order Creation Fragment -->
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="com.campus.foodorder.ui.student.CreateOrderFragment"
+        android:label="Place Order">
+        <argument
+            android:name="menuItem"
+            app:argType="com.campus.foodorder.data.model.MenuItem" />
+    </fragment>
 
     <fragment
         android:id="@+id/vendorDashboardFragment"
