@@ -1,4 +1,4 @@
-﻿package com.campus.foodorder.data.database
+package com.campus.foodorder.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -27,4 +27,7 @@ interface MenuItemDao {
 
     @Query("DELETE FROM menu_items WHERE vendorId = :vendorId")
     fun deleteByVendor(vendorId: Int)
+
+    @Query("SELECT COUNT(*) FROM menu_items")
+    fun getCount(): Int
 }

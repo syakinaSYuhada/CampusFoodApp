@@ -4,21 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.campus.foodorder.R
 import com.campus.foodorder.data.model.MenuItem
 
-// Lab: RecyclerView & ViewHolder (Phase 2)
-// Purpose: Display menu items list with click handling for order creation
+// Optimized RecyclerView adapter using ListAdapter + DiffUtil
 class MenuItemAdapter(
-    private var items: List<MenuItem> = emptyList(),
     private var onItemClick: ((MenuItem) -> Unit)? = null
-) : RecyclerView.Adapter<MenuItemAdapter.ViewHolder>() {
-
-    fun updateItems(newItems: List<MenuItem>) {
-        items = newItems
-        notifyDataSetChanged()
-    }
+) : ListAdapter<MenuItem, MenuItemAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     fun setOnItemClickListener(listener: (MenuItem) -> Unit) {
         onItemClick = listener
@@ -30,11 +25,9 @@ class MenuItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getItem(position)
         holder.bind(item)
     }
-
-    override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvName: TextView = itemView.findViewById(R.id.tvItemName)
@@ -46,9 +39,21 @@ class MenuItemAdapter(
             tvDesc.text = item.description
             tvPrice.text = "RM ${String.format("%.2f", item.price)}"
 
-            // Phase 2 Lab Comment: Click listener to navigate to order creation
             itemView.setOnClickListener {
                 onItemClick?.invoke(item)
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MenuItem>() {
+            override fun areItemsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean {
+                // Assuming unique ID is provided by Room entity (e.g., primary key)
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean {
+                return oldItem == newItem
             }
         }
     }

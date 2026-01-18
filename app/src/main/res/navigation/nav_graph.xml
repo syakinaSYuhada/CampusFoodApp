@@ -28,7 +28,15 @@
         <action
             android:id="@+id/action_to_create_order"
             app:destination="@id/createOrderFragment" />
+        <action
+            android:id="@+id/action_to_student_orders"
+            app:destination="@id/studentOrdersFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/studentOrdersFragment"
+        android:name="com.campus.foodorder.ui.student.StudentOrdersFragment"
+        android:label="My Orders" />
 
     <!-- Phase 2 Lab: Order Creation Fragment -->
     <fragment
@@ -43,6 +51,15 @@
     <fragment
         android:id="@+id/vendorDashboardFragment"
         android:name="com.campus.foodorder.ui.vendor.VendorDashboardFragment"
-        android:label="Vendor Dashboard" />
+        android:label="Vendor Dashboard">
+        <action
+            android:id="@+id/action_to_vendor_orders"
+            app:destination="@id/vendorOrdersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/vendorOrdersFragment"
+        android:name="com.campus.foodorder.ui.vendor.VendorOrdersFragment"
+        android:label="Pending Orders" />
 
 </navigation>

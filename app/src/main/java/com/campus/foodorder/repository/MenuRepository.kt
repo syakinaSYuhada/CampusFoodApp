@@ -16,6 +16,8 @@ class MenuRepository(application: Application) {
 
     fun getMenuItemsByVendor(vendorId: Int) = menuItemDao.getMenuItemsByVendor(vendorId)
 
+    suspend fun getCount(): Int = withContext(Dispatchers.IO) { menuItemDao.getCount() }
+
     suspend fun insertMenuItem(item: MenuItem) = withContext(Dispatchers.IO) {
         menuItemDao.insert(item)
     }

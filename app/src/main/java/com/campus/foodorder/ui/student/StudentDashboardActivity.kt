@@ -50,24 +50,35 @@ class StudentDashboardActivity : AppCompatActivity() {
 
         adapter = MenuItemAdapter()
         rvMenuItems.layoutManager = LinearLayoutManager(this)
+        rvMenuItems.setHasFixedSize(true)
         rvMenuItems.adapter = adapter
 
         // Observe menu items from ViewModel
+        var lastCount = -1
         lifecycleScope.launch {
             viewModel.allMenuItems.collect { items ->
-                adapter.updateItems(items)
-                // Show notification when menu items are loaded
-                if (items.isNotEmpty()) {
-                    notificationHelper.showOrderNotification(
-                        "Menu Updated",
-                        "${items.size} items available"
-                    )
+                adapter.submitList(items)
+                // Debounce notifications on count change only
+                val count = items.size
+                if (count != lastCount) {
+                    lastCount = count
+                    if (count > 0) {
+                        notificationHelper.showOrderNotification(
+                            "Menu Updated",
+                            "${count} items available"
+                        )
+                    }
                 }
             }
         }
 
-        // Insert sample data on first launch
-        insertSampleData()
+        // Guarded seeding: only insert sample data when DB is empty
+        lifecycleScope.launch {
+            val count = viewModel.getMenuCount()
+            if (count == 0) {
+                insertSampleData()
+            }
+        }
     }
 
     private fun requestNotificationPermission() {
